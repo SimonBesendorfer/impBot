@@ -1,23 +1,4 @@
-const menuBtn = document.getElementById('burger-btn');
-let burgerBtn = document.getElementById('burger');
-let menuOpen = false;
-
-function open(){
-  if(!menuOpen) {
-    menuBtn.classList.add('open');
-    menuOpen = true;
-  } else {
-    menuBtn.classList.remove('open');
-    menuOpen = false;
-  }
-
+function onClickMenu(){
+	document.getElementById("menu").classList.toggle("change");
+	document.getElementById("menu-bg").classList.toggle("change-bg");
 }
-menuBtn.addEventListener('click', function() {
-  if(!menuOpen) {
-    menuBtn.classList.add('open');
-    menuOpen = true;
-  } else {
-    menuBtn.classList.remove('open');
-    menuOpen = false;
-  }
-});
