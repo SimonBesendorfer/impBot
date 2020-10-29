@@ -18,6 +18,14 @@ h2 {
     margin-bottom: 0;
 }
 
+h3 {
+    font-family: 'Gloria Hallelujah', cursive;
+    color: brown;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 p {
     font-family: 'Rubik', sans-serif;
     margin: 4px;
@@ -70,3 +78,27 @@ p {
 	top:1px;
 }
 
+.slideInMenu {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 00vh;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    position: absolute;
+    transition: 0.3s ease-in-out;
+    text-align: center;
+}
+
+.d-none {
+    display: none;
+}
+
+.hoverMenuOpt {
+    color: white;
+}
+
+.menuOpt {
+    color: white;
+}

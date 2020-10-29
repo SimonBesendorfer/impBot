@@ -2,7 +2,8 @@
 	width: 35px;
 	height: 35px;
 	margin: 8;
-    position: absolute;
+	position: absolute;
+	z-index: 2;
     right: 5px;
     top: 10px;
 	cursor: pointer;
