@@ -45,14 +45,20 @@
     </div>
 
 
-    <div class="start-container">
+    <div id="content" class="start-container">
         <h2>Füge hier die Teilnehmer hinzu</h2>
         <p>es werden mindestens drei Personen benötigt!</p>
         <h3>Name:</h3>
-        <input id="participant">
-        <a href="#" class="myButton" style="margin-top: 12px" onclick="addParticipant()">hinzufügen</a>
+
+        <form onsubmit="addParticipant(); return false" style="flex-direction: column; display: flex;">
+            <input id="participant" required minlength="3" type="text">
+        <button href="#" class="myButton" style="margin-top: 12px" type="submit" onclick="">hinzufügen</button>
+        </form>
+
         <h3 style="margin-top: 24px">bereits hinzugefügt:</h3>
-        <ul></ul>
+        <ul id="participantsList"></ul>
+        <button id="nextBtn" href="#" class="myButton d-none" style="margin-top: 12px" onclick="shuffle()">weiter</button>
+        <img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">
     </div>
 </body>
 
