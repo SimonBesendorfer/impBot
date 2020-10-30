@@ -6,11 +6,9 @@ function addParticipant() {
     let participant = document.getElementById('participant').value;
     participants.push(participant);
     shuffled.push(participant);
-    console.log(participants);
     document.getElementById('participantsList').insertAdjacentHTML('beforeend', '<li>' + participant + '</li>')
     document.getElementById('participant').value = '';
     counter = counter + 1;
-    console.log(counter);
     checkForNext();
 }
 
@@ -32,7 +30,6 @@ function shuffle() {
         shuffled[i] = shuffled[j];
         shuffled[j] = temp;
     }
-    console.log(shuffled);
     checkForConflict();
 }
 
@@ -48,18 +45,76 @@ function checkForConflict() {
     if (conflict === true) {
         shuffle();
     } else {
-        getImp();
+        solution();
     }
 }
 
-function getImp() {
+function solution() {
+    let i = 0;
+    getImp(i);
+}
+
+function getImp(i) {
+    console.log('i ist ' + i + ' counter ist ' + counter);
+    if (i < counter) {
+        document.getElementById('content').innerHTML = '';
+        let HTML = `<h2>
+        Unser Wichtel hat den Topf geschüttelt!
+        </h2>
+        <p>Gib das Handy an</p>
+        <h2>${participants[i]}</h2>
+        <p>weiter!</p>
+        <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>`;
+        document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+    } if (i == counter) {
+        finish();
+    }
+
     document.getElementById('content').innerHTML = '';
     let HTML = `<h2>
     Unser Wichtel hat den Topf geschüttelt!
     </h2>
     <p>Gib das Handy an</p>
-    <h2>${participants[0]}</h2>
+    <h2>${participants[i]}</h2>
     <p>weiter!</p>
-    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter</button>`;
+    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>`;
+    document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+}
+
+function checkPerson(i) {
+    document.getElementById('content').innerHTML = '';
+    let HTML = `<h2>Bist du ${participants[i]}?
+    </h2>
+    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="showResult(${i})">Ja!</button>
+    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="getImp(${i})">Nein!</button>
+    `
+    document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+}
+
+function showResult(i) {
+    document.getElementById('content').innerHTML = '';
+    let HTML = `<h2>${participants[i]}</h2>
+    <p>du wirst ${shuffled[i]} beschenken!</p>
+    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="next(${i})">weiter</button>
+    `
+    document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+}
+
+function next(i) {
+    a = i + 1;
+    console.log('a ist ' + a);
+    if (a < counter) {
+        getImp(a);
+    } else {
+        finish();
+    }
+}
+
+function finish() {
+    document.getElementById('content').innerHTML = '';
+    let HTML = `<h2>Frohe Weihnachten</h2>
+    <p>jeder von euch weiß nun, wem er beschenken sollte</p>
+    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter</button>
+    `
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
