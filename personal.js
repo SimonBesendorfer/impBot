@@ -45,12 +45,21 @@ function checkForConflict() {
     if (conflict === true) {
         shuffle();
     } else {
-        solution();
+        document.getElementById('glass').classList.remove('d-none');
+        setTimeout(function(){
+            document.getElementById('glass').classList.add('d-none'); 
+            solution();       
+        }, 1500)
+        //solution();
     }
 }
 
 function solution() {
     let i = 0;
+    document.getElementById('glass').classList.remove('d-none');
+    setTimeout(function(){
+        document.getElementById('glass').classList.add('d-none');        
+    }, 1500)
     getImp(i);
 }
 
@@ -64,7 +73,8 @@ function getImp(i) {
         <p>Gib das Handy an</p>
         <h2>${participants[i]}</h2>
         <p>weiter!</p>
-        <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>`;
+        <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>
+        <img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
         document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
     } if (i == counter) {
         finish();
@@ -77,7 +87,8 @@ function getImp(i) {
     <p>Gib das Handy an</p>
     <h2>${participants[i]}</h2>
     <p>weiter!</p>
-    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>`;
+    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>
+    <img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
@@ -114,7 +125,7 @@ function finish() {
     document.getElementById('content').innerHTML = '';
     let HTML = `<h2>Frohe Weihnachten</h2>
     <p>jeder von euch weiß nun, wem er beschenken sollte</p>
-    <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter</button>
+    <button id="nextBtn" href="index.html" class="myButton" style="margin-top: 12px" onclick="">weiter</button>
     `
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
