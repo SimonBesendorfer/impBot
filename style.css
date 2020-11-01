@@ -115,6 +115,11 @@ a {
     color: white;
 }
 
+.popPopup {
+    display: none;
+    
+}
+
 .jiggle {
     -webkit-animation: jiggle 0.2s infinite;
     -moz-animation-duration: 0.2s;
