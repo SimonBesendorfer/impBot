@@ -58,7 +58,7 @@ function solution() {
     let i = 0;
     document.getElementById('glass').classList.remove('d-none');
     setTimeout(function(){
-        document.getElementById('glass').classList.add('d-none');        
+        //document.getElementById('glass').classList.add('d-none');        
     }, 1500)
     getImp(i);
 }
@@ -125,7 +125,7 @@ function finish() {
     document.getElementById('content').innerHTML = '';
     let HTML = `<h2>Frohe Weihnachten</h2>
     <p>jeder von euch weiß nun, wem er beschenken sollte</p>
-    <button id="nextBtn" href="index.html" class="myButton" style="margin-top: 12px" onclick="">weiter</button>
+    <a href="index.html"><button id="nextBtn" href="index.html" class="myButton" style="margin-top: 12px" onclick="">weiter</button><a>
     `
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }

@@ -47,14 +47,23 @@
 
     <div id="content" class="start-container">
         <h2>
-            Anleitung!
+            Willkommen beim online Wichtel Bot!
         </h2>
-        <p>Klicke auf weiter und sende den erstellten Link an alle Teilnehmer weiter.</p>
-        <p>Jeder Teilnehmer kann dann seinen Namen und einen Erkennungs Key eintragen</p>
-        <p>Auf der Seite siehst du, wer sich bereits eingetragen hat. Ist die Gruppe komplett, 
-            kannst du unseren Wichtel "schütteln" lassen.</p>
-        <p>Jeder kann dann auf die Seite zurück kommen und mit seinen Namen und Key seinen zu beschenkenden Abfragen!</p>
-        <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="generatePersonalPage()">weiter</button>
+        <p>Du hast diesen Link bekommen, um an dieser Wichtelgruppe Teilzunehmen.</p>
+        <p>Hier kannst du dich mit deinem Namen eintragen und einen Code vergeben, um sicher zu stellen, 
+            dass nur du und niemand sonst erfährt wer von dir beschenkt wird. Das hält die spannung bis zum schluss aufrecht</p>
+        <p>Gib hier deinen Namen und Code ein um dich der Gruppe anzuschließen! Unten Siehst du, wer bereits dabei ist.</p>
+
+        <form style="display: flex; flex-direction: column;">
+            <input style="margin-top: 12px;" type="text" minlength="3" placeholder="Name">
+            <input style="margin-top: 12px;" type="password" minlength="4" placeholder="Code">
+        </form>
+        
+        
+        <button id="" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter</button>
+
+        <h2>Bereits in der Gruppe:</h2>
+        <ul id="participants"></ul>
     </div>
 </body>
 
