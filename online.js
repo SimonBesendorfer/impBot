@@ -1,7 +1,9 @@
-let impData = [];
 const BASE_SERVER_URL = "http://simon-besendorfer.developerakademie.com/php/";
+
+let impData = [];
 let url = window.location.href;
 let id = url.substring(url.lastIndexOf('=') + 1);
+let indexOfGroup = null;
 
 function generatePersonalPage() {
     let id = new Date().getTime();
@@ -18,7 +20,7 @@ function generatePersonalPage() {
 function getData() {
     console.log("getData NOW");
     load();
-    console.log(id);
+    console.log("this is the id from URL " + id);
 }
 
 function load() {
@@ -26,6 +28,7 @@ function load() {
         .then(function (result) { //then(function (variable vom server))
             console.log('Laden erfolgreich!', result);
             impData = JSON.parse(result);
+            checkForMatch();
         })
         .catch(function (error) { // Fehler
             console.error('Fehler beim laden!', error);
@@ -61,5 +64,14 @@ function determineProxySettings() {
         return '';
     } else {
         return 'https://cors-anywhere.herokuapp.com/';
+    }
+}
+
+function checkForMatch() {
+    for(let i= 0; i < impData.length; i++){
+        if (impData[i].ID == id) {
+            indexOfGroup = i;
+            console.log("Treffer " + i);
+        }
     }
 }
