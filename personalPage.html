@@ -24,10 +24,10 @@
         </div>
         <div id="slideInMenu" class="slideInMenu">
             <div id="menuOptions" class="d-none" style="padding-top: 80px;">
-                <a>
+                <a href="index.html">
                     <h2 class="menuOpt">Home</h2>
                 </a>
-                <a>
+                <a href="decide.html">
                     <h2 class="menuOpt">Start</h2>
                 </a>
                 <a>
@@ -55,12 +55,12 @@
         <p>Gib hier deinen Namen und Code ein um dich der Gruppe anzuschließen! Unten Siehst du, wer bereits dabei ist.</p>
 
         <form style="display: flex; flex-direction: column;">
-            <input style="margin-top: 12px;" type="text" minlength="3" placeholder="Name">
-            <input style="margin-top: 12px;" type="password" minlength="4" placeholder="Code">
+            <input id="name" style="margin-top: 12px;" type="text" minlength="3" placeholder="Name">
+            <input id="pass" style="margin-top: 12px;" type="password" minlength="4" placeholder="Code">
         </form>
         
         
-        <button id="" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter</button>
+        <button id="" href="#" class="myButton" style="margin-top: 12px" onclick="addParticipant()">weiter</button>
 
         <h2>Bereits in der Gruppe:</h2>
         <ul id="participants"></ul>

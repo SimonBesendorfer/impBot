@@ -74,4 +74,24 @@ function checkForMatch() {
             console.log("Treffer " + i);
         }
     }
+    showParticipants()
+}
+
+function showParticipants() {
+    console.log(impData[indexOfGroup].participants);
+    for (let i = 0; i < impData[indexOfGroup].participants.length; i++) {
+        console.log(impData[indexOfGroup].participants[i]);
+        let HTML = '<li>' + impData[indexOfGroup].participants[i] + '</li>';
+        document.getElementById('participants').insertAdjacentHTML('beforeend', HTML);
+    }
+}
+
+function addParticipant(){
+    console.log(impData[indexOfGroup].participants.length);
+    let i = impData[indexOfGroup].participants.length;
+    impData[indexOfGroup].participants.push('name');
+    impData[indexOfGroup].key.push(document.getElementById('pass').value);
+
+    console.log(impData[indexOfGroup].participants);
+    console.log(impData[indexOfGroup].key);
 }
