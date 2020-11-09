@@ -2,7 +2,7 @@
     "ID": 1604196942,
     "counter": 3,
     "participants": ["PersonA", "PersonB", "PersonC"],
-    "Shuffled": ["PersonC", "PersonA", "PersonB"],
+    "Shuffled": ["PersonA", "PersonB", "PersonC"],
     "Key": [1111, 2222, 3333]
 },
 {
