@@ -19,8 +19,11 @@ function checkForNext() {
 }
 
 
-// Fucntion to shuffle the array content 
-function shuffle() {
+/**
+ * 
+ * Fucntion to shuffle the array content 
+*/
+ function shuffle() {
 
     for (let i = shuffled.length - 1; i > 0; i--) {
         // Generate random number  
@@ -129,3 +132,4 @@ function finish() {
     `
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
+

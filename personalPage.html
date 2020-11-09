@@ -54,13 +54,11 @@
             dass nur du und niemand sonst erfährt wer von dir beschenkt wird. Das hält die spannung bis zum schluss aufrecht</p>
         <p>Gib hier deinen Namen und Code ein um dich der Gruppe anzuschließen! Unten Siehst du, wer bereits dabei ist.</p>
 
-        <form style="display: flex; flex-direction: column;">
-            <input id="name" style="margin-top: 12px;" type="text" minlength="3" placeholder="Name">
-            <input id="pass" style="margin-top: 12px;" type="password" minlength="4" placeholder="Code">
+        <form style="display: flex; flex-direction: column;" action="#" onsubmit="addParticipant(); return false;">
+            <input id="name" style="margin-top: 12px;" type="text" required minlength="3" placeholder="Name">
+            <input id="pass" style="margin-top: 12px;" type="password" required minlength="4" placeholder="Code">
+            <button id="" href="#" class="myButton" style="margin-top: 12px" type="submit" type="button">hinzufügen</button>
         </form>
-        
-        
-        <button id="" href="#" class="myButton" style="margin-top: 12px" onclick="addParticipant()">weiter</button>
 
         <h2>Bereits in der Gruppe:</h2>
         <ul id="participants"></ul>

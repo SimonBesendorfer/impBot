@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: personal.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: personal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let participants = [];
+let shuffled = [];
+let counter = 0;
+
+function addParticipant() {
+    let participant = document.getElementById('participant').value;
+    participants.push(participant);
+    shuffled.push(participant);
+    document.getElementById('participantsList').insertAdjacentHTML('beforeend', '&lt;li>' + participant + '&lt;/li>')
+    document.getElementById('participant').value = '';
+    counter = counter + 1;
+    checkForNext();
+}
+
+function checkForNext() {
+    if (counter >= 3) {
+        document.getElementById('nextBtn').classList.remove('d-none');
+    }
+}
+
+
+/**
+ * 
+ * Fucntion to shuffle the array content 
+*/
+ function shuffle() {
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        // Generate random number  
+        let j = Math.floor(Math.random() * (i + 1));
+
+        let temp = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
+    }
+    checkForConflict();
+}
+
+// Checks if the shuffled array mataches on any place with the previous array position
+function checkForConflict() {
+    let conflict = false;
+    for (let i = 0; i &lt; shuffled.length; i++) {
+        if (shuffled[i] == participants[i]) {
+            conflict = true;
+        }
+    }
+    console.log(conflict);
+    if (conflict === true) {
+        shuffle();
+    } else {
+        document.getElementById('glass').classList.remove('d-none');
+        setTimeout(function(){
+            document.getElementById('glass').classList.add('d-none'); 
+            solution();       
+        }, 1500)
+        //solution();
+    }
+}
+
+function solution() {
+    let i = 0;
+    document.getElementById('glass').classList.remove('d-none');
+    setTimeout(function(){
+        //document.getElementById('glass').classList.add('d-none');        
+    }, 1500)
+    getImp(i);
+}
+
+function getImp(i) {
+    console.log('i ist ' + i + ' counter ist ' + counter);
+    if (i &lt; counter) {
+        document.getElementById('content').innerHTML = '';
+        let HTML = `&lt;h2>
+        Unser Wichtel hat den Topf geschüttelt!
+        &lt;/h2>
+        &lt;p>Gib das Handy an&lt;/p>
+        &lt;h2>${participants[i]}&lt;/h2>
+        &lt;p>weiter!&lt;/p>
+        &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter&lt;/button>
+        &lt;img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
+        document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+    } if (i == counter) {
+        finish();
+    }
+
+    document.getElementById('content').innerHTML = '';
+    let HTML = `&lt;h2>
+    Unser Wichtel hat den Topf geschüttelt!
+    &lt;/h2>
+    &lt;p>Gib das Handy an&lt;/p>
+    &lt;h2>${participants[i]}&lt;/h2>
+    &lt;p>weiter!&lt;/p>
+    &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter&lt;/button>
+    &lt;img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
+    document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+}
+
+function checkPerson(i) {
+    document.getElementById('content').innerHTML = '';
+    let HTML = `&lt;h2>Bist du ${participants[i]}?
+    &lt;/h2>
+    &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="showResult(${i})">Ja!&lt;/button>
+    &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="getImp(${i})">Nein!&lt;/button>
+    `
+    document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+}
+
+function showResult(i) {
+    document.getElementById('content').innerHTML = '';
+    let HTML = `&lt;h2>${participants[i]}&lt;/h2>
+    &lt;p>du wirst ${shuffled[i]} beschenken!&lt;/p>
+    &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="next(${i})">weiter&lt;/button>
+    `
+    document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+}
+
+function next(i) {
+    a = i + 1;
+    console.log('a ist ' + a);
+    if (a &lt; counter) {
+        getImp(a);
+    } else {
+        finish();
+    }
+}
+
+function finish() {
+    document.getElementById('content').innerHTML = '';
+    let HTML = `&lt;h2>Frohe Weihnachten&lt;/h2>
+    &lt;p>jeder von euch weiß nun, wem er beschenken sollte&lt;/p>
+    &lt;a href="index.html">&lt;button id="nextBtn" href="index.html" class="myButton" style="margin-top: 12px" onclick="">weiter&lt;/button>&lt;a>
+    `
+    document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#onClickMenu">onClickMenu</a></li><li><a href="global.html#shuffle">shuffle</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Nov 03 2020 14:25:22 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
