@@ -4,6 +4,7 @@ let impData = [];
 let url = window.location.href;
 let id = url.substring(url.lastIndexOf('=') + 1);
 let indexOfGroup = null;
+let yourNameID = null;
 
 
 function generatePersonalPage() {
@@ -104,6 +105,9 @@ function checkForMatch() {
             indexOfGroup = i;
             console.log("Treffer " + i);
             showParticipants();
+            if (impData[indexOfGroup].participants.length >= 3){
+                document.getElementById('startShuffle').classList.remove('d-none');
+            }
             }
     }
     if (indexOfGroup == null) {
@@ -177,11 +181,14 @@ function addMessage(){
     <p>Wenn alle Teilnehmer eingetragen sind, kannst du die Ergebnisse auslosen</p>
     <p>WICHTIG! Es müssen mindestens 3 Teilnehmer sein</p>
     <a href="personalPage.html?id=${id}"><button id="" href="#" class="myButton" style="margin-top: 12px">weiterer Teilnehmer</button></a>
-    <button id="" href="#" class="myButton" style="margin-top: 12px" type="">Ziehung starten</button>
+    <button id="shuffle" onclick="shureToShuffle()" href="#" class="myButton d-none" style="margin-top: 12px" type="">Ziehung starten</button>
     <h2>Bereits in der Gruppe:</h2>
     <ul id="participants"></ul>
     `;
     content.insertAdjacentHTML('beforeend', html);
+    if (impData[indexOfGroup].counter >= 3){
+        document.getElementById('shuffle').classList.remove('d-none');
+    }
 }
 
 function showResult(){
@@ -204,5 +211,84 @@ function showResult(){
 }
 
 function showPersonalImp(){
-    alert("oh yeah");
+    let participant = document.getElementById('name').value;
+    let key = document.getElementById('pass').value;
+    for (let i = 0; i < impData[indexOfGroup].participants.length; i++){
+        if (participant == impData[indexOfGroup].participants[i]){
+            yourNameID = i;
+        }
+    }
+    if (key == impData[indexOfGroup].Key[yourNameID]){
+        console.log('du wirst ' + impData[indexOfGroup].Shuffled[yourNameID] + ' beschenken');
+        showPersonToGivePresent();
+    } else {
+        console.log('falsches Login oder Passwort!');
+    }
+}
+
+function showPersonToGivePresent(){
+    let content = document.getElementById('content');
+    content.innerHTML = '';
+    let html = `
+    <h2>Dein persönliches Ergebnis</h2>
+    <p>Du wirst<p>
+    <h3>${impData[indexOfGroup].Shuffled[yourNameID]}</h3>
+    <p>beschenken</p>
+    <p>Merke oder notiere dir den Namen und verrate niemanden wen du beschenken wirst!</p>
+    <p>Wichtel Bot wünscht dir und deinen Liebsten frohe Weihnachten!</p>
+    <a href="index.html"><button class="myButton" style="margin-top: 12px">zurück zur Startseite</button></a>
+    `;
+    content.insertAdjacentHTML('beforeend', html);
+}
+
+function shureToShuffle(){
+    let content = document.getElementById('content');
+    content.innerHTML = '';
+    let html = `
+    <h2>Bist du sicher?</h2>
+    <p>Bitte überprüfe nochmals die Teilnehmerliste. Du kannst danach keine Personen mehr hinzufügen.<p>
+    <h3>Teilnehmer:</H3>
+    <ul id="participants"></ul>
+    <a href="index.html"><button class="myButton" style="margin-top: 12px">Abbrechen</button></a>
+    <button class="myButton" onclick="shuffle()" style="margin-top: 12px">Ziehung starten</button>
+    `;
+    content.insertAdjacentHTML('beforeend', html);
+
+    for (let i = 0; i < impData[indexOfGroup].participants.length; i++) {
+        console.log(impData[indexOfGroup].participants[i]);
+        let list = '<li>' + impData[indexOfGroup].participants[i] + '</li>';
+        document.getElementById('participants').insertAdjacentHTML('beforeend', list);
+    }
+}
+
+function shuffle(){
+    for (let i = impData[indexOfGroup].Shuffled.length - 1; i > 0; i--) {
+        // Generate random number  
+        let j = Math.floor(Math.random() * (i + 1));
+
+        let temp = impData[indexOfGroup].Shuffled[i];
+        impData[indexOfGroup].Shuffled[i] = impData[indexOfGroup].Shuffled[j];
+        impData[indexOfGroup].Shuffled[j] = temp;
+    }
+    checkForConflict();
+}
+
+function checkForConflict() {
+    let conflict = false;
+    for (let i = 0; i < impData[indexOfGroup].Shuffled.length; i++) {
+        if (impData[indexOfGroup].Shuffled[i] == impData[indexOfGroup].participants[i]) {
+            conflict = true;
+        }
+    }
+    console.log(conflict);
+    if (conflict === true) {
+        shuffle();
+    } else {
+        console.log(impData[indexOfGroup].Shuffled);
+        saveJSONToServer(impData)
+        .then(function (result) { //then(function (variable vom server))
+            console.log('Laden erfolgreich!', result);
+            getData();
+        });
+    }
 }
