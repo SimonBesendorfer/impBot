@@ -115,9 +115,38 @@ a {
     color: white;
 }
 
+.popup {
+    display: flex;
+    position: absolute;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 3;
+}
+
+.popupFrame {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.loading {
+    display: flex;
+    position: absolute;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(107, 146, 185, 0.9);
+    z-index: 3;
+}
+
+/*check if this is used*/
 .popPopup {
-    display: none;
-    
+    display: none;   
 }
 
 .jiggle {

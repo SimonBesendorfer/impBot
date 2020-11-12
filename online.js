@@ -6,7 +6,12 @@ let id = url.substring(url.lastIndexOf('=') + 1);
 let indexOfGroup = null;
 let yourNameID = null;
 
-
+/**
+ * The function generatePersonalPage() generates an individual link for every Group by using the
+ * unix Time Stamp as an extention for URL "http://***.com/personalPage.html?ID=1605171452000"
+ * Before you get on the Page it is displayd in online.html and shoud be copied and sent to the
+ * invitet Members in the Group.
+ */
 function generatePersonalPage() {
     let id = new Date().getTime();
     let html = `<h2>
@@ -20,12 +25,20 @@ function generatePersonalPage() {
 
 }
 
+/**
+ * getData() is startet onload when opening the individual generated page for every usergroup.
+ * It leads to the function load()
+ */
 function getData() {
-    console.log("getData NOW");
     load();
-    console.log("this is the id from URL " + id);
 }
 
+/**
+ * The function load() is 1 of 2 nesessary function for getting the data from the Server.
+ * It starts the function loadJSONFromServer(). When the JSON is loaded, a statement will be displayed
+ * in the console, the JSON will be parsed to impData and the function checkForMatch() will be startet.
+ * If there is a Problem with loading, a Message will be displayed in the console.
+ */
 function load() {
     loadJSONFromServer()
         .then(function (result) { //then(function (variable vom server))
@@ -38,6 +51,9 @@ function load() {
         });
 }
 
+/**
+ * loadJSONFromServer() contains all the nessesary information for getting the JSON from the server.
+ */
 function loadJSONFromServer() {
     return new Promise(function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
@@ -60,25 +76,23 @@ function loadJSONFromServer() {
     });
 }
 
+/** 
+ * saveJSONToServer() contains all the nessesary information for saving the JSON on the Server.
+ * It is an post statement and will replace the current available JSON with a totaly new one.
+ * 
+ */
 function saveJSONToServer(payload) {
     return new Promise(function (resolve, reject) {
         let xhttp = new XMLHttpRequest();
         let serverURL = BASE_SERVER_URL + "save_json.php";
-        xhttp.open("POST", serverURL); // POST = Erstellen; GET = Abrufen; DELETE = Löschen, PUT = Updaten
+        xhttp.open("POST", serverURL);
 
         xhttp.onreadystatechange = function (oEvent) {
             if (xhttp.readyState === 4) {
-                // Nr. 4 bedeutet, dass der Server eine Antwort gesendet hat
-                // Eine Antwort hat 2 Teile: a) Statuscode; b) payload
-                // 404 = Nicht gefunden
-                // 200 = Alles OK
-                // 202 = Datei erstellt
 
                 if (xhttp.status >= 200 && xhttp.status <= 399) {
-                    // Alles super, es hat funktioniert!
                     resolve(xhttp.responseText);
                 } else {
-                    // Ein Fehler ist aufgetreten
                     reject(xhttp.statusText);
                 }
             }
@@ -89,6 +103,9 @@ function saveJSONToServer(payload) {
     });
 }
 
+/**
+ * determineProxySettings() contains functionality for testing in offline mode.
+ */
 function determineProxySettings() {
     if (window.location.href.indexOf('.developerakademie.com') > -1) {
         return '';
@@ -97,51 +114,59 @@ function determineProxySettings() {
     }
 }
 
-
-
+/**
+ * checkForMatch() checks, if the individual Page ID matches with an ID in the JSON.
+ * If there is a Match, the i is saved as indexOfGroup and all the participants will be displayed
+ * by the function showParticipants(). If there are more then 3 Player, the start Shuffle Button will be displayed.
+ * 
+ * If there is no matching ID in the JSON, a new Group (newFam) will bei pusht to the Array, saved to the Server
+ * and reloaded.
+ * 
+ * If the loaded JSON is allready shuffled, the functon showResult() is starting.
+ */
 function checkForMatch() {
     for (let i = 0; i < impData.length; i++) {
         if (impData[i].ID == id) {
             indexOfGroup = i;
-            console.log("Treffer " + i);
             showParticipants();
             if (impData[indexOfGroup].participants.length >= 3){
                 document.getElementById('startShuffle').classList.remove('d-none');
             }
-            }
+        }
     }
     if (indexOfGroup == null) {
-        console.log('no ID found');
         indexOfGroup = impData.length +1;
-        //save new ID
         let newFam = createImpFamily();
         impData.push(newFam);
         saveJSONToServer(impData)
-        .then(function (result) { //then(function (variable vom server))
+        .then(function (result) {
             console.log('Laden erfolgreich!', result);
             getData();
     })
-        .catch(function (error) { // Fehler
+        .catch(function (error) {
             console.error('Fehler beim laden!', error);
         });
-
     }
-    if (impData[indexOfGroup].participants[0] != impData[indexOfGroup].Shuffled[0]) {
+    if (impData[indexOfGroup].counter == null && impData[indexOfGroup].participants[0] != impData[indexOfGroup].Shuffled[0]) {
         showResult();
     }
 }
 
+/**
+ * The function showParticipants() displays all members of a group in html.
+ */
 function showParticipants() {
-    console.log(impData[indexOfGroup].participants);
     for (let i = 0; i < impData[indexOfGroup].participants.length; i++) {
-        console.log(impData[indexOfGroup].participants[i]);
         let HTML = '<li>' + impData[indexOfGroup].participants[i] + '</li>';
         document.getElementById('participants').insertAdjacentHTML('beforeend', HTML);
     }
 }
 
+/**
+ * addParticipant() adds a new member to the individual group and saves it to the Server,
+ * starts the function getData() and addMEssage().
+ */
 function addParticipant() {
-    console.log(impData[indexOfGroup].participants.length);
     let i = impData[indexOfGroup].participants.length;
     let name = document.getElementById('name').value;
     let pass = document.getElementById('pass').value;
@@ -149,18 +174,21 @@ function addParticipant() {
     impData[indexOfGroup].participants.push(name);
     impData[indexOfGroup].Shuffled.push(name);
     impData[indexOfGroup].Key.push(pass);
-    //string = JSON.stringify(impData);
     saveJSONToServer(impData)
-        .then(function (result) { //then(function (variable vom server))
+        .then(function (result) {
             console.log('Laden erfolgreich!', result);
             getData();
             addMessage();
     })
-        .catch(function (error) { // Fehler
+        .catch(function (error) {
             console.error('Fehler beim laden!', error);
         });
 }
 
+/**
+ * createImpFamily() Creates a new empty Group (family) which will be added to the JSON
+ * impData and later saved on the server.
+ */
 function createImpFamily(){
     let family = {
         'ID': parseFloat(id),
@@ -172,6 +200,9 @@ function createImpFamily(){
     return family;
 }
 
+/**
+ * addMessage() shows information in html after adding a new member to the group
+ */
 function addMessage(){
     let content = document.getElementById('content');
     content.innerHTML = '';
@@ -191,8 +222,11 @@ function addMessage(){
     }
 }
 
+/**
+ * showResult() shows information in html, that the function shuffle() allready has been startet and
+ * displays the the form and button which can start the function showPersonalImp().
+ */
 function showResult(){
-    console.log("Alarm");
     let content = document.getElementById('content');
     content.innerHTML = '';
     let html = `
@@ -210,6 +244,11 @@ function showResult(){
     showParticipants();
 }
 
+/**
+ * showPersonalImp() checks, if the enterd name and password matches with the data from the JSON.
+ * If there is a match, the function showPersonToGivePresent() will be startet,
+ * if the password is not matching, a popup Info will apear for 4 sec.
+ */
 function showPersonalImp(){
     let participant = document.getElementById('name').value;
     let key = document.getElementById('pass').value;
@@ -219,13 +258,20 @@ function showPersonalImp(){
         }
     }
     if (key == impData[indexOfGroup].Key[yourNameID]){
-        console.log('du wirst ' + impData[indexOfGroup].Shuffled[yourNameID] + ' beschenken');
         showPersonToGivePresent();
-    } else {
-        console.log('falsches Login oder Passwort!');
+    } 
+    if (key != impData[indexOfGroup].Key[yourNameID]) {
+        document.getElementById("wrongPass").classList.remove('d-none');
+        setTimeout(function(){
+            document.getElementById("wrongPass").classList.add('d-none');
+        }, 4000);
     }
 }
 
+/**
+ * showPersonToGivePresent() displays the Information which person in the individual goup matches after
+ * shuffeling.
+ */
 function showPersonToGivePresent(){
     let content = document.getElementById('content');
     content.innerHTML = '';
@@ -241,6 +287,10 @@ function showPersonToGivePresent(){
     content.insertAdjacentHTML('beforeend', html);
 }
 
+/**
+ * shureToShufle() displays a warning message and explans, that the function shuffle() only
+ * one time can be startet.
+ */
 function shureToShuffle(){
     let content = document.getElementById('content');
     content.innerHTML = '';
@@ -261,6 +311,9 @@ function shureToShuffle(){
     }
 }
 
+/**
+ * shuffle() Mixes the group Array Shuffled and starts the function checkForConflict().
+ */
 function shuffle(){
     for (let i = impData[indexOfGroup].Shuffled.length - 1; i > 0; i--) {
         // Generate random number  
@@ -273,6 +326,10 @@ function shuffle(){
     checkForConflict();
 }
 
+/**
+ * checkForConflict() compares participants and Shuffled at the same Array position. If there is anywhere the same
+ * name, the function shuffle will be startet again. If there is no match, the JSON will be saved to the server.
+ */
 function checkForConflict() {
     let conflict = false;
     for (let i = 0; i < impData[indexOfGroup].Shuffled.length; i++) {
@@ -288,7 +345,7 @@ function checkForConflict() {
         saveJSONToServer(impData)
         .then(function (result) { //then(function (variable vom server))
             console.log('Laden erfolgreich!', result);
-            getData();
+            location.reload();
         });
     }
 }
