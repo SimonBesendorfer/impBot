@@ -147,7 +147,7 @@ function checkForMatch() {
             console.error('Fehler beim laden!', error);
         });
     }
-    if (impData[indexOfGroup].counter == null && impData[indexOfGroup].participants[0] != impData[indexOfGroup].Shuffled[0]) {
+    if (impData[indexOfGroup].participants[0] != impData[indexOfGroup].Shuffled[0]) {
         showResult();
     }
 }

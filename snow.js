@@ -97,3 +97,18 @@ for (i = 0; i <= snowMax; i++) {
 
 window.addEventListener('resize', resize);
 window.addEventListener('load', initSnow);
+
+
+function startLoadingAnimation(){
+	document.getElementById('loading').classList.remove('d-none');
+	for (i = 0; i <= snowMax; i++) {
+		document.getElementById('flake' + i).classList.remove('d-none');
+	}
+}
+
+function stopLoadingAnimation(){
+	document.getElementById('loading').classList.add('d-none');
+	for (i = 0; i <= 50; i++){
+		document.getElementById('flake' + i).classList.add('d-none');
+	}
+}

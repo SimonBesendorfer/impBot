@@ -4,6 +4,7 @@
     <title>Wichtel Bot</title>
     <script src="script.js"></script>
     <script src ="personal.js"></script>
+    <script src=snow.js></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="burger-btn-style.css">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Rubik:wght@400;700&display=swap"
@@ -11,8 +12,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
-<body>
+<body id="body">
+    <div id="loading" class="d-none">
+        <div class="loading">
+            <p style="color: white; font-size: 20px;">Loading...</p>
+        </div>
+    </div>
     <div class="popup d-none">
         <div class="popupFrame">
             <p>Passwort falsch!</p>

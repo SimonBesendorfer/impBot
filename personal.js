@@ -48,19 +48,9 @@ function checkForConflict() {
     if (conflict === true) {
         shuffle();
     } else {
-        document.getElementById('loading').classList.remove('d-none');
-        //snowMax = 50;
-        //initSnow();
-        for (i = 0; i <= snowMax; i++){
-            document.getElementById('flake' + i).classList.remove('d-none');
-        }
+        startLoadingAnimation();
         setTimeout(function(){
-            document.getElementById('loading').classList.add('d-none');
-            //initSnow();
-            for (i = 0; i <= snowMax; i++){
-                document.getElementById('flake' + i).classList.add('d-none');
-            }
-            solution();       
+           startLoadingAnimation();       
         }, 3500)
         //solution();
     }
