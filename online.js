@@ -198,22 +198,40 @@ function addParticipant() {
     let i = impData[indexOfGroup].participants.length;
     let name = document.getElementById('name').value;
     let pass = document.getElementById('pass').value;
+    let nameConflict = false;
     impData[indexOfGroup].counter = impData[indexOfGroup].counter +1;
-    impData[indexOfGroup].participants.push(name);
-    impData[indexOfGroup].Shuffled.push(name);
-    impData[indexOfGroup].Key.push(pass);
-    startLoadingAnimation();
-    saveJSONToServer(impData)
-        .then(function (result) {
-            console.log('Laden erfolgreich!', result);
-            stopLoadingAnimation();
-            addMessage();
-            showParticipants();
-    })
-        .catch(function (error) {
-            console.error('Fehler beim laden!', error);
-        });
+
+    for (i = 0; i < impData[indexOfGroup].participants.length; i++) {
+        if (name == impData[indexOfGroup].participants[i]) {
+            nameConflict = true;
+        }
+    }
+    if (nameConflict == true) {
+        document.getElementById('name').value = '';
+        document.getElementById('pass').value = '';
+        document.getElementById('nameConflict').classList.remove('d-none');
+        setTimeout(function(){
+            document.getElementById('nameConflict').classList.add('d-none');
+        }, 6000)
+    } else {
+        impData[indexOfGroup].participants.push(name);
+        impData[indexOfGroup].Shuffled.push(name);
+        impData[indexOfGroup].Key.push(pass);
+        startLoadingAnimation();
+        saveJSONToServer(impData)
+            .then(function (result) {
+                console.log('Laden erfolgreich!', result);
+                stopLoadingAnimation();
+                addMessage();
+                showParticipants();
+        })
+            .catch(function (error) {
+                console.error('Fehler beim laden!', error);
+            });
+    }
 }
+
+
 
 /**
  * createImpFamily() Creates a new empty Group (family) which will be added to the JSON
