@@ -2,33 +2,53 @@ let participants = [];
 let shuffled = [];
 let counter = 0;
 
+/**
+ * addParticipant() adds the entered Name to the Array participants and shuffled.
+ * Before the Name is added, the entered value is checkt, if it is already in the array.
+ * If it is already in the array, an Error Message will be displayed and the name will NOT be added to the Array.
+ * The function checkForNext() will be started.
+ */
 function addParticipant() {
     let participant = document.getElementById('participant').value;
-    participants.push(participant);
-    shuffled.push(participant);
-    document.getElementById('participantsList').insertAdjacentHTML('beforeend', '<li>' + participant + '</li>')
-    document.getElementById('participant').value = '';
-    counter = counter + 1;
-    checkForNext();
+    let nameConflict = false;
+    for (i = 0; i < participants.length; i++) {
+        if (participant == participants[i]) {
+            nameConflict = true;
+        }
+    }
+    if (nameConflict == true) {
+        document.getElementById('participant').value = '';
+        document.getElementById('nameConflict').classList.remove('d-none');
+        setTimeout(function(){
+            document.getElementById('nameConflict').classList.add('d-none');
+        }, 6000)
+    } else {
+        participants.push(participant);
+        shuffled.push(participant);
+        document.getElementById('participantsList').insertAdjacentHTML('beforeend', '<li>' + participant + '</li>')
+        document.getElementById('participant').value = '';
+        counter = counter + 1;
+        checkForNext();
+    }
 }
 
+/**
+ * checkForNext() checks, if there are already 3 or more participants in the Arrays (participants and shuffled)
+ */
 function checkForNext() {
     if (counter >= 3) {
         document.getElementById('nextBtn').classList.remove('d-none');
     }
 }
 
-
 /**
- * 
- * Fucntion to shuffle the array content 
+ * shuffle() is started by clicking on the button "weiter". It will shuffle the Array Position
+ * of the Names in the Array shuffled.
+ * After the array is shuffled, the checkForConflict() function will be started. 
 */
- function shuffle() {
-
+function shuffle() {
     for (let i = shuffled.length - 1; i > 0; i--) {
-        // Generate random number  
         let j = Math.floor(Math.random() * (i + 1));
-
         let temp = shuffled[i];
         shuffled[i] = shuffled[j];
         shuffled[j] = temp;
@@ -36,7 +56,12 @@ function checkForNext() {
     checkForConflict();
 }
 
-// Checks if the shuffled array mataches on any place with the previous array position
+/**
+ * checkForConflict() checks, if the name[i] in the participants Array is the same name as it is
+ * in at the same position in the Array shuffled. All Array positions will be checkt.
+ * If there is the same name on any place, the function shuffle() will be started again.
+ * If there is no conclict, the function solution() will be started.
+ */
 function checkForConflict() {
     let conflict = false;
     for (let i = 0; i < shuffled.length; i++) {
@@ -44,29 +69,30 @@ function checkForConflict() {
             conflict = true;
         }
     }
-    console.log(conflict);
     if (conflict === true) {
         shuffle();
     } else {
         startLoadingAnimation();
-        setTimeout(function(){
-           startLoadingAnimation();       
+        setTimeout(function () {
+            stopLoadingAnimation();
         }, 3500)
-        //solution();
+        solution();
     }
 }
 
+/**
+ * It defines the parameter i and starts the getImp() function
+ */
 function solution() {
     let i = 0;
-    document.getElementById('glass').classList.remove('d-none');
-    setTimeout(function(){
-        //document.getElementById('glass').classList.add('d-none');        
-    }, 1500)
     getImp(i);
 }
 
+/**
+ * getImp() will Display Result information and is one of the functions, which leads you thru the results.
+ * @param {number of array position which will be showed} i 
+ */
 function getImp(i) {
-    console.log('i ist ' + i + ' counter ist ' + counter);
     if (i < counter) {
         document.getElementById('content').innerHTML = '';
         let HTML = `<h2>
@@ -81,12 +107,11 @@ function getImp(i) {
     } if (i == counter) {
         finish();
     }
-
     document.getElementById('content').innerHTML = '';
     let HTML = `<h2>
     Unser Wichtel hat den Topf geschüttelt!
     </h2>
-    <p>Gib das Handy an</p>
+    <p style="margin-top: 24px">Gib das Handy an</p>
     <h2>${participants[i]}</h2>
     <p>weiter!</p>
     <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>
@@ -94,6 +119,10 @@ function getImp(i) {
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
+/**
+ * checkPerson() will Display Result Information and is one of the functions, whick leads you thru the results.
+ * @param {number of array position which will be showed} i 
+ */
 function checkPerson(i) {
     document.getElementById('content').innerHTML = '';
     let HTML = `<h2>Bist du ${participants[i]}?
@@ -104,18 +133,26 @@ function checkPerson(i) {
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
+/**
+ * showResult() will Display Result Information and is one of the functions, whick leads you thru the results.
+ * @param {number of array position which will be showed} i 
+ */
 function showResult(i) {
     document.getElementById('content').innerHTML = '';
     let HTML = `<h2>${participants[i]}</h2>
-    <p>du wirst ${shuffled[i]} beschenken!</p>
+    <p>du wirst <b>${shuffled[i]}</b> beschenken!</p>
     <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="next(${i})">weiter</button>
     `
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
+/**
+ * next() will Display Result Information and is one of the functions, whick leads you thru the results.
+ * adds +1 th the parameter which is responsible for showing the array position.
+ * @param {number of array position which will be showed} i 
+ */
 function next(i) {
     a = i + 1;
-    console.log('a ist ' + a);
     if (a < counter) {
         getImp(a);
     } else {
@@ -123,6 +160,9 @@ function next(i) {
     }
 }
 
+/**
+ * finish() shows a final Screen and gives the option for going back to index.html
+ */
 function finish() {
     document.getElementById('content').innerHTML = '';
     let HTML = `<h2>Frohe Weihnachten</h2>
@@ -131,4 +171,3 @@ function finish() {
     `
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
-

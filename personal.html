@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="burger-btn-style.css">
     <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Rubik:wght@400;700&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/favicon.png"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -17,6 +18,14 @@
     <div id="loading" class="d-none">
         <div class="loading">
             <p style="color: white; font-size: 20px;">Loading...</p>
+        </div>
+    </div>
+    <div id="nameConflict" class="d-none">
+        <div class="popup">
+            <div class="popupFrame">
+                <p>Der Name ist bereits vergeben!</p>
+                <p>Bitte verwende einen anderen oder ergänze deinen Namen.</p>
+            </div>
         </div>
     </div>
     <div class="header">
@@ -56,18 +65,14 @@
         <p>es werden mindestens drei Personen benötigt!</p>
         <h3 style="margin-top: 20px">Name:</h3>
 
-        <form onsubmit="addParticipant(); return false" style="flex-direction: column; display: flex;">
+        <form onsubmit="addParticipant(); return false">
             <input id="participant" required minlength="3" type="text">
             <button href="#" class="myButton" style="margin-top: 12px" type="submit" onclick="">hinzufügen</button>
         </form>
-
+        <button id="nextBtn" href="#" class="myButton d-none" onclick="shuffle()">weiter</button>
         <h3 style="margin-top: 24px">bereits hinzugefügt:</h3>
         <ul id="participantsList"></ul>
-        <button id="nextBtn" href="#" class="myButton d-none" style="margin-top: 12px"
-            onclick="shuffle()">weiter</button>
-        <div id="glass" class="potPopup d-none">
-            <img style="width: 100px;" id="" class="jiggle" src="img/glass.png">
-        </div>
+        <button id="nextBtn" href="#" class="myButton d-none" onclick="shuffle()">weiter</button>
     </div>
 </body>
 
