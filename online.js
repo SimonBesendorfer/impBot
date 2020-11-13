@@ -1,4 +1,4 @@
-const BASE_SERVER_URL = "http://simon-besendorfer.developerakademie.com/php/";
+const BASE_SERVER_URL = "http://simon-besendorfer.developerakademie.com/impBot/php/";
 
 let impData = [];
 let url = window.location.href;

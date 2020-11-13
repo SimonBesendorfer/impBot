@@ -102,7 +102,7 @@ function getImp(i) {
         <h2>${participants[i]}</h2>
         <p>weiter!</p>
         <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>
-        <img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
+        `;
         document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
     } if (i == counter) {
         finish();
@@ -115,7 +115,7 @@ function getImp(i) {
     <h2>${participants[i]}</h2>
     <p>weiter!</p>
     <button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter</button>
-    <img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
+    `;
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
