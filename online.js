@@ -14,15 +14,31 @@ let yourNameID = null;
  */
 function generatePersonalPage() {
     let id = new Date().getTime();
+    let hostname = window.location.hostname;
+    let personalLink = hostname + '/impBot/personalPage.html?id=' + id;
     let html = `<h2>
         Kopieren und versenden
         </h2>
         <p>versende den untenstehenden Link an alle Teilnehmer!</p>
-        <p>personalPage.html?id=${id}</p>
+        <input type="text" value="${personalLink}" id="copyLink">
+        <button id="" href="#" class="myButton" style="margin-top: 12px" onclick="copyToClipboard()">Link kopieren</button>
         <a href="personalPage.html?id=${id}"><button id="" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter</button></a>`
     document.getElementById('content').innerHTML = '';
     document.getElementById('content').insertAdjacentHTML('beforeend', html);
+}
 
+/**
+ * copyToClipboard() will copy the individual Link to the Device Clipboard
+ */
+function copyToClipboard() {
+    let copiedLink = document.getElementById('copyLink');
+    copiedLink.select();
+    copiedLink.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.getElementById('linkCopied').classList.remove('d-none');
+    setTimeout (function(){
+        document.getElementById('linkCopied').classList.add('d-none');
+    }, 5000);
 }
 
 /**
@@ -40,11 +56,14 @@ function getData() {
  * If there is a Problem with loading, a Message will be displayed in the console.
  */
 function load() {
+    startLoadingAnimation();
     loadJSONFromServer()
         .then(function (result) { //then(function (variable vom server))
             console.log('Laden erfolgreich!', result);
             impData = JSON.parse(result);
             checkForMatch();
+            stopLoadingAnimation();
+            checkIfShuffled();
         })
         .catch(function (error) { // Fehler
             console.error('Fehler beim laden!', error);
@@ -122,7 +141,7 @@ function determineProxySettings() {
  * If there is no matching ID in the JSON, a new Group (newFam) will bei pusht to the Array, saved to the Server
  * and reloaded.
  * 
- * If the loaded JSON is allready shuffled, the functon showResult() is starting.
+ * It will start the function checkIfShuffled().
  */
 function checkForMatch() {
     for (let i = 0; i < impData.length; i++) {
@@ -132,7 +151,7 @@ function checkForMatch() {
             if (impData[indexOfGroup].participants.length >= 3){
                 document.getElementById('startShuffle').classList.remove('d-none');
             }
-        }
+        } 
     }
     if (indexOfGroup == null) {
         indexOfGroup = impData.length +1;
@@ -147,8 +166,17 @@ function checkForMatch() {
             console.error('Fehler beim laden!', error);
         });
     }
-    if (impData[indexOfGroup].participants[0] != impData[indexOfGroup].Shuffled[0]) {
-        showResult();
+}
+
+/**
+ * checkIfShuffled() checks if the loaded family is new. If not, it will check, if the current group
+ * already is shuffled.
+ */
+function checkIfShuffled(){
+    if (impData[indexOfGroup] != undefined){
+        if (impData[indexOfGroup].participants[0] != impData[indexOfGroup].Shuffled[0]) {
+            showResult();
+        }    
     }
 }
 
@@ -174,11 +202,13 @@ function addParticipant() {
     impData[indexOfGroup].participants.push(name);
     impData[indexOfGroup].Shuffled.push(name);
     impData[indexOfGroup].Key.push(pass);
+    startLoadingAnimation();
     saveJSONToServer(impData)
         .then(function (result) {
             console.log('Laden erfolgreich!', result);
-            getData();
+            stopLoadingAnimation();
             addMessage();
+            showParticipants();
     })
         .catch(function (error) {
             console.error('Fehler beim laden!', error);
@@ -340,7 +370,8 @@ function checkForConflict() {
     console.log(conflict);
     if (conflict === true) {
         shuffle();
-    } else {
+    } 
+    if(conflict == false) {
         console.log(impData[indexOfGroup].Shuffled);
         saveJSONToServer(impData)
         .then(function (result) { //then(function (variable vom server))
