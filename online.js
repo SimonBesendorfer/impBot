@@ -5,6 +5,7 @@ let url = window.location.href;
 let id = url.substring(url.lastIndexOf('=') + 1);
 let indexOfGroup = null;
 let yourNameID = null;
+let deleteOlderThan = 1; //in Days -- Content older than the set Days will be deletet when the function deleteOldFamily() is started
 
 /**
  * The function generatePersonalPage() generates an individual link for every Group by using the
@@ -67,6 +68,7 @@ function load() {
         })
         .catch(function (error) { // Fehler
             console.error('Fehler beim laden!', error);
+            serverError();
         });
 }
 
@@ -164,6 +166,7 @@ function checkForMatch() {
     })
         .catch(function (error) {
             console.error('Fehler beim laden!', error);
+            serverError();
         });
     }
 }
@@ -227,6 +230,7 @@ function addParticipant() {
         })
             .catch(function (error) {
                 console.error('Fehler beim laden!', error);
+                serverError();
             });
     }
 }
@@ -395,6 +399,34 @@ function checkForConflict() {
         .then(function (result) { //then(function (variable vom server))
             console.log('Laden erfolgreich!', result);
             location.reload();
+        })
+        .catch(function (error) {
+            console.error('Fehler beim laden!', error);
+            serverError();
         });
     }
+}
+
+
+/**
+ * Displays an Error Message if there is any trouble with the connection to the server
+ */
+function serverError() {
+    document.getElementById('serverError').classList.remove('d-none');
+    stopLoadingAnimation();
+}
+
+/**
+ * deleteOldFamily() starts after loading the Data from the server and removes old Data
+ */
+function deleteOldFamily() {
+    let currentTime = new Date().getTime();
+    let deleteIDlowerThan = currentTime - (deleteOlderThan * 86400000); //86400000 miliseconds = 1 day
+    for (i = 0; i < impData.length; i++) {
+        if (impData[i].ID < deleteIDlowerThan) {
+            console.log(impData[i]);
+            impData.splice(i, 1);
+        }
+    }
+    console.log(impData);
 }
