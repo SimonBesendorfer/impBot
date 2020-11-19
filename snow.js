@@ -33,6 +33,8 @@ var snowStyles = "cursor: default; -webkit-user-select: none; -moz-user-select: 
 // Do not modify the code below this line
 */
 
+
+
 var snow = [],
 	pos = [],
 	coords = [],
@@ -97,7 +99,6 @@ for (i = 0; i <= snowMax; i++) {
 
 window.addEventListener('resize', resize);
 window.addEventListener('load', initSnow);
-
 
 function startLoadingAnimation(){
 	document.getElementById('loading').classList.remove('d-none');

@@ -159,19 +159,15 @@ function checkForMatch() {
         indexOfGroup = impData.length +1;
         let newFam = createImpFamily();
         impData.push(newFam);
-        startLoadingAnimation();
-        saveJSONToServer(impData)
+        /**saveJSONToServer(impData)
         .then(function (result) {
             console.log('Laden erfolgreich!', result);
-            setTimeout(function(){
-                getData();
-                stopLoadingAnimation();
-            }, 1000)
+            getData();
     })
         .catch(function (error) {
             console.error('Fehler beim laden!', error);
             serverError();
-        });
+        });*/
     }
 }
 
@@ -248,7 +244,7 @@ function addParticipant() {
 function createImpFamily(){
     let family = {
         'ID': parseFloat(id),
-        'counter': parseFloat(0),
+        'counter': null,
         'participants': [],
         'Shuffled': [],
         'Key': []
@@ -434,10 +430,3 @@ function deleteOldFamily() {
     }
     console.log(impData);
 }
-
-
-/**
- * Counter set to 0 intead of null
- * set Timeout for second loading if an ID has to be created
- * Check Loading Animation
- */
