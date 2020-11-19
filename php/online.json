@@ -1,14 +1,1 @@
-[{
-    "ID": 1604196942,
-    "counter": 3,
-    "participants": ["PersonA", "PersonB", "PersonC"],
-    "Shuffled": ["PersonA", "PersonB", "PersonC"],
-    "Key": [1111, 2222, 3333]
-},
-{
-    "ID": 1604138536,
-    "counter": 3,
-    "participants": ["PersonD", "PersonE", "PersonF"],
-    "Shuffled": ["PersonF", "PersonD", "PersonE"],
-    "Key": [1111, 2222, 3333]
-}]
+[{"ID":1605466278786,"counter":5,"participants":["Simon","Johannes","Christian","Besendorfer Johann","Mutti"],"Shuffled":["Mutti","Simon","Besendorfer Johann","Christian","Johannes"],"Key":["sims","1234","1973","120250","neuesPasswort"]}]

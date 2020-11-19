@@ -13,7 +13,7 @@
     <script src="snow.js"></script>
 </head>
 
-<body onload="getData()">
+<body onload="load()">
     <div id="wrongPass" class="d-none">
         <div class="popup">
             <div class="popupFrame">
@@ -39,7 +39,7 @@
             <div class="popupFrame">
                 <p>Hoppla das sollte nicht passieren!</p>
                 <p>Es gab ein Problem beim zugriff auf unseren Server. Bitte versuche es später nochmal.</p>
-                <button onclick="location.reload()" id="startShuffle" class="myButton" style="margin-top: 12px">Neu laden!</button>
+                <button onclick="location.reload()" id="" class="myButton" style="margin-top: 12px">Neu laden!</button>
             </div>
         </div>
     </div>
@@ -80,13 +80,13 @@
             Willkommen beim online Wichtel Bot!
         </h2>
         <p>Du hast diesen Link bekommen, um an dieser Wichtelgruppe Teilzunehmen.</p>
-        <p>Hier kannst du dich mit deinem Namen eintragen und einen Code vergeben, um sicher zu stellen, 
+        <p>Hier kannst du dich mit deinem Namen eintragen und ein Passwort vergeben, um sicher zu stellen, 
             dass nur du und niemand sonst erfährt wer von dir beschenkt wird. Das hält die spannung bis zum schluss aufrecht</p>
-        <p>Gib hier deinen Namen und Code ein um dich der Gruppe anzuschließen! Unten Siehst du, wer bereits dabei ist.</p>
+        <p>Gib hier deinen Namen und Passwort ein um dich der Gruppe anzuschließen! Unten Siehst du, wer bereits dabei ist.</p>
 
         <form style="display: flex; flex-direction: column;" action="#" onsubmit="addParticipant(); return false;">
             <input id="name" style="margin-top: 12px;" type="text" required minlength="3" placeholder="Name">
-            <input id="pass" style="margin-top: 12px;" type="password" required minlength="4" placeholder="Code">
+            <input id="pass" style="margin-top: 12px;" type="password" required minlength="4" placeholder="Passwort">
             <button id="" href="#" class="myButton" style="margin-top: 12px" type="submit" type="button">hinzufügen</button>
         </form>
         <button onclick="shureToShuffle()" id="startShuffle" class="myButton d-none" style="margin-top: 12px">Ziehung starten</button>
