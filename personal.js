@@ -90,7 +90,7 @@ function solution() {
 
 /**
  * getImp() will Display Result information and is one of the functions, which leads you thru the results.
- * @param {number of array position which will be showed} i 
+ * @param {number} i of array position which will be showed
  */
 function getImp(i) {
     if (i < counter) {
@@ -121,7 +121,7 @@ function getImp(i) {
 
 /**
  * checkPerson() will Display Result Information and is one of the functions, whick leads you thru the results.
- * @param {number of array position which will be showed} i 
+ * @param {number} i of array position which will be showed
  */
 function checkPerson(i) {
     document.getElementById('content').innerHTML = '';
@@ -135,7 +135,7 @@ function checkPerson(i) {
 
 /**
  * showResult() will Display Result Information and is one of the functions, whick leads you thru the results.
- * @param {number of array position which will be showed} i 
+ * @param {number} i of array position which will be showed 
  */
 function showResult(i) {
     document.getElementById('content').innerHTML = '';
@@ -149,7 +149,7 @@ function showResult(i) {
 /**
  * next() will Display Result Information and is one of the functions, whick leads you thru the results.
  * adds +1 th the parameter which is responsible for showing the array position.
- * @param {number of array position which will be showed} i 
+ * @param {number} i of array position which will be showed
  */
 function next(i) {
     a = i + 1;

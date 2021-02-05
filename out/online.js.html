@@ -1,11 +1,39 @@
-const BASE_SERVER_URL = "http://simon-besendorfer.developerakademie.com/impBot/php/";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: online.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: online.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const BASE_SERVER_URL = "http://simon-besendorfer.developerakademie.com/impBot/php/";
 
 let impData = [];
 let url = window.location.href;
 let id = url.substring(url.lastIndexOf('=') + 1);
 let indexOfGroup = null;
 let yourNameID = null;
-let deleteOlderThan = 1; //in Days -- Content older than the set Days will be deletet when the function deleteOldFamily() is started
+let deleteOlderThan = 30; //in Days -- Content older than the set Days will be deletet when the function deleteOldFamily() is started
 
 /**
  * The function generatePersonalPage() generates an individual link for every Group by using the
@@ -17,13 +45,13 @@ function generatePersonalPage() {
     let id = new Date().getTime();
     let hostname = window.location.hostname;
     let personalLink = hostname + '/impBot/personalPage.html?id=' + id;
-    let html = `<h2>
+    let html = `&lt;h2>
         Kopieren und versenden
-        </h2>
-        <p>versende den untenstehenden Link an alle Teilnehmer!</p>
-        <input type="text" value="${personalLink}" id="copyLink">
-        <button id="" href="#" class="myButton" style="margin-top: 12px" onclick="copyToClipboard()">Link kopieren</button>
-        <a href="personalPage.html?id=${id}"><button id="" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter</button></a>`
+        &lt;/h2>
+        &lt;p>versende den untenstehenden Link an alle Teilnehmer!&lt;/p>
+        &lt;input type="text" value="${personalLink}" id="copyLink">
+        &lt;button id="" href="#" class="myButton" style="margin-top: 12px" onclick="copyToClipboard()">Link kopieren&lt;/button>
+        &lt;a href="personalPage.html?id=${id}">&lt;button id="" href="#" class="myButton" style="margin-top: 12px" onclick="">weiter&lt;/button>&lt;/a>`
     document.getElementById('content').innerHTML = '';
     document.getElementById('content').insertAdjacentHTML('beforeend', html);
 }
@@ -37,22 +65,14 @@ function copyToClipboard() {
     copiedLink.setSelectionRange(0, 99999);
     document.execCommand("copy");
     document.getElementById('linkCopied').classList.remove('d-none');
-    setTimeout (function(){
+    setTimeout(function () {
         document.getElementById('linkCopied').classList.add('d-none');
     }, 5000);
 }
 
 /**
- * getData() is startet onload when opening the individual generated page for every usergroup.
- * It leads to the function load()
- */
-function getData() {
-    load();
-}
-
-/**
- * The function load() is 1 of 2 nesessary function for getting the data from the Server.
- * It starts the function loadJSONFromServer(). When the JSON is loaded, a statement will be displayed
+ * The function load() starts the function loadJSONFromServer() when the personalPage is loaded.
+ * When the JSON is loaded, a statement will be displayed.
  * in the console, the JSON will be parsed to impData and the function checkForMatch() will be startet.
  * If there is a Problem with loading, a Message will be displayed in the console.
  */
@@ -62,9 +82,9 @@ function load() {
         .then(function (result) { //then(function (variable vom server))
             console.log('Laden erfolgreich!', result);
             impData = JSON.parse(result);
-                checkForMatch();
-                stopLoadingAnimation();
-                checkIfShuffled();
+            checkForMatch();
+            stopLoadingAnimation();
+            checkIfShuffled();
         })
         .catch(function (error) { // Fehler
             console.error('Fehler beim laden!', error);
@@ -84,7 +104,7 @@ function loadJSONFromServer() {
 
         xhttp.onreadystatechange = function (oEvent) {
             if (xhttp.readyState === 4) {
-                if (xhttp.status >= 200 && xhttp.status <= 399) {
+                if (xhttp.status >= 200 &amp;&amp; xhttp.status &lt;= 399) {
                     resolve(xhttp.responseText);
                 } else {
                     reject(xhttp.statusText);
@@ -107,18 +127,15 @@ function saveJSONToServer(payload) {
         let xhttp = new XMLHttpRequest();
         let serverURL = BASE_SERVER_URL + "save_json.php";
         xhttp.open("POST", serverURL);
-
         xhttp.onreadystatechange = function (oEvent) {
             if (xhttp.readyState === 4) {
-
-                if (xhttp.status >= 200 && xhttp.status <= 399) {
+                if (xhttp.status >= 200 &amp;&amp; xhttp.status &lt;= 399) {
                     resolve(xhttp.responseText);
                 } else {
                     reject(xhttp.statusText);
                 }
             }
         };
-
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send(JSON.stringify(payload));
     });
@@ -139,35 +156,24 @@ function determineProxySettings() {
  * checkForMatch() checks, if the individual Page ID matches with an ID in the JSON.
  * If there is a Match, the i is saved as indexOfGroup and all the participants will be displayed
  * by the function showParticipants(). If there are more then 3 Player, the start Shuffle Button will be displayed.
- * 
  * If there is no matching ID in the JSON, a new Group (newFam) will bei pusht to the Array, saved to the Server
- * and reloaded.
- * 
+ * and reloaded. 
  * It will start the function checkIfShuffled().
  */
 function checkForMatch() {
-    for (let i = 0; i < impData.length; i++) {
+    for (let i = 0; i &lt; impData.length; i++) {
         if (impData[i].ID == id) {
             indexOfGroup = i;
             showParticipants();
-            if (impData[indexOfGroup].participants.length >= 3){
+            if (impData[indexOfGroup].participants.length >= 3) {
                 document.getElementById('startShuffle').classList.remove('d-none');
             }
-        } 
+        }
     }
     if (indexOfGroup == null) {
-        indexOfGroup = impData.length +1;
+        indexOfGroup = impData.length;
         let newFam = createImpFamily();
         impData.push(newFam);
-        /**saveJSONToServer(impData)
-        .then(function (result) {
-            console.log('Laden erfolgreich!', result);
-            getData();
-    })
-        .catch(function (error) {
-            console.error('Fehler beim laden!', error);
-            serverError();
-        });*/
     }
 }
 
@@ -175,11 +181,11 @@ function checkForMatch() {
  * checkIfShuffled() checks if the loaded family is new. If not, it will check, if the current group
  * already is shuffled.
  */
-function checkIfShuffled(){
-    if (impData[indexOfGroup] != undefined){
+function checkIfShuffled() {
+    if (impData[indexOfGroup] != undefined) {
         if (impData[indexOfGroup].participants[0] != impData[indexOfGroup].Shuffled[0]) {
             showResult();
-        }    
+        }
     }
 }
 
@@ -187,8 +193,8 @@ function checkIfShuffled(){
  * The function showParticipants() displays all members of a group in html.
  */
 function showParticipants() {
-    for (let i = 0; i < impData[indexOfGroup].participants.length; i++) {
-        let HTML = '<li>' + impData[indexOfGroup].participants[i] + '</li>';
+    for (let i = 0; i &lt; impData[indexOfGroup].participants.length; i++) {
+        let HTML = '&lt;li>' + impData[indexOfGroup].participants[i] + '&lt;/li>';
         document.getElementById('participants').insertAdjacentHTML('beforeend', HTML);
     }
 }
@@ -202,9 +208,9 @@ function addParticipant() {
     let name = document.getElementById('name').value;
     let pass = document.getElementById('pass').value;
     let nameConflict = false;
-    impData[indexOfGroup].counter = impData[indexOfGroup].counter +1;
+    impData[indexOfGroup].counter = impData[indexOfGroup].counter + 1;
 
-    for (i = 0; i < impData[indexOfGroup].participants.length; i++) {
+    for (i = 0; i &lt; impData[indexOfGroup].participants.length; i++) {
         if (name == impData[indexOfGroup].participants[i]) {
             nameConflict = true;
         }
@@ -213,7 +219,7 @@ function addParticipant() {
         document.getElementById('name').value = '';
         document.getElementById('pass').value = '';
         document.getElementById('nameConflict').classList.remove('d-none');
-        setTimeout(function(){
+        setTimeout(function () {
             document.getElementById('nameConflict').classList.add('d-none');
         }, 6000)
     } else {
@@ -227,7 +233,7 @@ function addParticipant() {
                 stopLoadingAnimation();
                 addMessage();
                 showParticipants();
-        })
+            })
             .catch(function (error) {
                 console.error('Fehler beim laden!', error);
                 serverError();
@@ -241,10 +247,10 @@ function addParticipant() {
  * createImpFamily() Creates a new empty Group (family) which will be added to the JSON
  * impData and later saved on the server.
  */
-function createImpFamily(){
+function createImpFamily() {
     let family = {
         'ID': parseFloat(id),
-        'counter': null,
+        'counter': parseFloat(0),
         'participants': [],
         'Shuffled': [],
         'Key': []
@@ -255,21 +261,21 @@ function createImpFamily(){
 /**
  * addMessage() shows information in html after adding a new member to the group
  */
-function addMessage(){
+function addMessage() {
     let content = document.getElementById('content');
     content.innerHTML = '';
     let html = `
-    <h2>Deine Name wurde hinzugefügt</h2>
-    <p>Merke oder notiere dir dein Passwort, um nach der Ziehung dein Ergebnis abzufragen!</p>
-    <p>Wenn alle Teilnehmer eingetragen sind, kannst du die Ergebnisse auslosen</p>
-    <p>WICHTIG! Es müssen mindestens 3 Teilnehmer sein</p>
-    <a href="personalPage.html?id=${id}"><button id="" href="#" class="myButton" style="margin-top: 12px">weiterer Teilnehmer</button></a>
-    <button id="shuffle" onclick="shureToShuffle()" href="#" class="myButton d-none" style="margin-top: 12px" type="">Ziehung starten</button>
-    <h2>Bereits in der Gruppe:</h2>
-    <ul id="participants"></ul>
+    &lt;h2>Deine Name wurde hinzugefügt&lt;/h2>
+    &lt;p>Merke oder notiere dir dein Passwort, um nach der Ziehung dein Ergebnis abzufragen!&lt;/p>
+    &lt;p>Wenn alle Teilnehmer eingetragen sind, kannst du die Ergebnisse auslosen&lt;/p>
+    &lt;p>WICHTIG! Es müssen mindestens 3 Teilnehmer sein&lt;/p>
+    &lt;a href="personalPage.html?id=${id}">&lt;button id="" href="#" class="myButton" style="margin-top: 12px">weiterer Teilnehmer&lt;/button>&lt;/a>
+    &lt;button id="shuffle" onclick="shureToShuffle()" href="#" class="myButton d-none" style="margin-top: 12px" type="">Ziehung starten&lt;/button>
+    &lt;h2>Bereits in der Gruppe:&lt;/h2>
+    &lt;ul id="participants">&lt;/ul>
     `;
     content.insertAdjacentHTML('beforeend', html);
-    if (impData[indexOfGroup].counter >= 3){
+    if (impData[indexOfGroup].counter >= 3) {
         document.getElementById('shuffle').classList.remove('d-none');
     }
 }
@@ -278,19 +284,19 @@ function addMessage(){
  * showResult() shows information in html, that the function shuffle() allready has been startet and
  * displays the the form and button which can start the function showPersonalImp().
  */
-function showResult(){
+function showResult() {
     let content = document.getElementById('content');
     content.innerHTML = '';
     let html = `
-    <h2>Die Ziehung ist Abgeschlossen</h2>
-    <p>Log dich hier ein, um dein Ergebnis abzufragen!<p>
-    <form style="display: flex; flex-direction: column;" action="#" onsubmit="showPersonalImp(); return false;">
-    <input id="name" style="margin-top: 12px;" type="text" required minlength="3" placeholder="Name">
-    <input id="pass" style="margin-top: 12px;" type="password" required minlength="4" placeholder="Code">
-    <button id="" href="#" class="myButton" style="margin-top: 12px" type="submit" type="button">Ergebnis anzeigen</button>
-    </form>
-    <h2>Teilgenommen:</h2>
-    <ul id="participants"></ul>
+    &lt;h2>Die Ziehung ist Abgeschlossen&lt;/h2>
+    &lt;p>Log dich hier ein, um dein Ergebnis abzufragen!&lt;p>
+    &lt;form style="display: flex; flex-direction: column;" action="#" onsubmit="showPersonalImp(); return false;">
+    &lt;input id="name" style="margin-top: 12px;" type="text" required minlength="3" placeholder="Name">
+    &lt;input id="pass" style="margin-top: 12px;" type="password" required minlength="4" placeholder="Passwort">
+    &lt;button id="" href="#" class="myButton" style="margin-top: 12px" type="submit" type="button">Ergebnis anzeigen&lt;/button>
+    &lt;/form>
+    &lt;h2>Teilgenommen:&lt;/h2>
+    &lt;ul id="participants">&lt;/ul>
     `;
     content.insertAdjacentHTML('beforeend', html);
     showParticipants();
@@ -301,20 +307,20 @@ function showResult(){
  * If there is a match, the function showPersonToGivePresent() will be startet,
  * if the password is not matching, a popup Info will apear for 4 sec.
  */
-function showPersonalImp(){
+function showPersonalImp() {
     let participant = document.getElementById('name').value;
     let key = document.getElementById('pass').value;
-    for (let i = 0; i < impData[indexOfGroup].participants.length; i++){
-        if (participant == impData[indexOfGroup].participants[i]){
+    for (let i = 0; i &lt; impData[indexOfGroup].participants.length; i++) {
+        if (participant == impData[indexOfGroup].participants[i]) {
             yourNameID = i;
         }
     }
-    if (key == impData[indexOfGroup].Key[yourNameID]){
+    if (key == impData[indexOfGroup].Key[yourNameID]) {
         showPersonToGivePresent();
-    } 
+    }
     if (key != impData[indexOfGroup].Key[yourNameID]) {
         document.getElementById("wrongPass").classList.remove('d-none');
-        setTimeout(function(){
+        setTimeout(function () {
             document.getElementById("wrongPass").classList.add('d-none');
         }, 4000);
     }
@@ -324,17 +330,17 @@ function showPersonalImp(){
  * showPersonToGivePresent() displays the Information which person in the individual goup matches after
  * shuffeling.
  */
-function showPersonToGivePresent(){
+function showPersonToGivePresent() {
     let content = document.getElementById('content');
     content.innerHTML = '';
     let html = `
-    <h2>Dein persönliches Ergebnis</h2>
-    <p>Du wirst<p>
-    <h3>${impData[indexOfGroup].Shuffled[yourNameID]}</h3>
-    <p>beschenken</p>
-    <p>Merke oder notiere dir den Namen und verrate niemanden wen du beschenken wirst!</p>
-    <p>Wichtel Bot wünscht dir und deinen Liebsten frohe Weihnachten!</p>
-    <a href="index.html"><button class="myButton" style="margin-top: 12px">zurück zur Startseite</button></a>
+    &lt;h2>Dein persönliches Ergebnis&lt;/h2>
+    &lt;p>Du wirst&lt;p>
+    &lt;h3>${impData[indexOfGroup].Shuffled[yourNameID]}&lt;/h3>
+    &lt;p>beschenken&lt;/p>
+    &lt;p>Merke oder notiere dir den Namen und verrate niemanden wen du beschenken wirst!&lt;/p>
+    &lt;p>Wichtel Bot wünscht dir und deinen Liebsten frohe Weihnachten!&lt;/p>
+    &lt;button onclick="deleteOldFamily()" class="myButton" style="margin-top: 12px">zurück zur Startseite&lt;/button>
     `;
     content.insertAdjacentHTML('beforeend', html);
 }
@@ -343,22 +349,21 @@ function showPersonToGivePresent(){
  * shureToShufle() displays a warning message and explans, that the function shuffle() only
  * one time can be startet.
  */
-function shureToShuffle(){
+function shureToShuffle() {
     let content = document.getElementById('content');
     content.innerHTML = '';
     let html = `
-    <h2>Bist du sicher?</h2>
-    <p>Bitte überprüfe nochmals die Teilnehmerliste. Du kannst danach keine Personen mehr hinzufügen.<p>
-    <h3>Teilnehmer:</H3>
-    <ul id="participants"></ul>
-    <a href="index.html"><button class="myButton" style="margin-top: 12px">Abbrechen</button></a>
-    <button class="myButton" onclick="shuffle()" style="margin-top: 12px">Ziehung starten</button>
+    &lt;h2>Bist du sicher?&lt;/h2>
+    &lt;p>Bitte überprüfe nochmals die Teilnehmerliste. Du kannst danach keine Personen mehr hinzufügen.&lt;p>
+    &lt;h3>Teilnehmer:&lt;/H3>
+    &lt;ul id="participants">&lt;/ul>
+    &lt;a href="index.html">&lt;button class="myButton" style="margin-top: 12px">Abbrechen&lt;/button>&lt;/a>
+    &lt;button class="myButton" onclick="shuffle()" style="margin-top: 12px">Ziehung starten&lt;/button>
     `;
     content.insertAdjacentHTML('beforeend', html);
 
-    for (let i = 0; i < impData[indexOfGroup].participants.length; i++) {
-        console.log(impData[indexOfGroup].participants[i]);
-        let list = '<li>' + impData[indexOfGroup].participants[i] + '</li>';
+    for (let i = 0; i &lt; impData[indexOfGroup].participants.length; i++) {
+        let list = '&lt;li>' + impData[indexOfGroup].participants[i] + '&lt;/li>';
         document.getElementById('participants').insertAdjacentHTML('beforeend', list);
     }
 }
@@ -366,7 +371,7 @@ function shureToShuffle(){
 /**
  * shuffle() Mixes the group Array Shuffled and starts the function checkForConflict().
  */
-function shuffle(){
+function shuffle() {
     for (let i = impData[indexOfGroup].Shuffled.length - 1; i > 0; i--) {
         // Generate random number  
         let j = Math.floor(Math.random() * (i + 1));
@@ -384,26 +389,24 @@ function shuffle(){
  */
 function checkForConflict() {
     let conflict = false;
-    for (let i = 0; i < impData[indexOfGroup].Shuffled.length; i++) {
+    for (let i = 0; i &lt; impData[indexOfGroup].Shuffled.length; i++) {
         if (impData[indexOfGroup].Shuffled[i] == impData[indexOfGroup].participants[i]) {
             conflict = true;
         }
     }
-    console.log(conflict);
     if (conflict === true) {
         shuffle();
-    } 
-    if(conflict == false) {
-        console.log(impData[indexOfGroup].Shuffled);
+    }
+    if (conflict == false) {
         saveJSONToServer(impData)
-        .then(function (result) { //then(function (variable vom server))
-            console.log('Laden erfolgreich!', result);
-            location.reload();
-        })
-        .catch(function (error) {
-            console.error('Fehler beim laden!', error);
-            serverError();
-        });
+            .then(function (result) { //then(function (variable vom server))
+                console.log('Laden erfolgreich!', result);
+                location.reload();
+            })
+            .catch(function (error) {
+                console.error('Fehler beim laden!', error);
+                serverError();
+            });
     }
 }
 
@@ -417,16 +420,47 @@ function serverError() {
 }
 
 /**
- * deleteOldFamily() starts after loading the Data from the server and removes old Data
+ * deleteOldFamily() is started after klicking on the button "zurück zum Start"
  */
 function deleteOldFamily() {
     let currentTime = new Date().getTime();
     let deleteIDlowerThan = currentTime - (deleteOlderThan * 86400000); //86400000 miliseconds = 1 day
-    for (i = 0; i < impData.length; i++) {
-        if (impData[i].ID < deleteIDlowerThan) {
-            console.log(impData[i]);
+    for (i = 0; i &lt; impData.length; i++) {
+        if (impData[i].ID &lt; deleteIDlowerThan || impData[i].ID == null) {
             impData.splice(i, 1);
+            i = i - 1;
         }
     }
-    console.log(impData);
-}
+    saveJSONToServer(impData)
+        .then(function (result) {
+            console.log('Laden erfolgreich!', result);
+            stopLoadingAnimation();
+            window.location.replace("http://simon-besendorfer.developerakademie.com/impBot/index.html");
+        })
+        .catch(function (error) {
+            console.error('Fehler beim laden!', error);
+            serverError();
+        });
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addMessage">addMessage</a></li><li><a href="global.html#addParticipant">addParticipant</a></li><li><a href="global.html#checkForConflict">checkForConflict</a></li><li><a href="global.html#checkForMatch">checkForMatch</a></li><li><a href="global.html#checkForNext">checkForNext</a></li><li><a href="global.html#checkIfShuffled">checkIfShuffled</a></li><li><a href="global.html#checkPerson">checkPerson</a></li><li><a href="global.html#copyToClipboard">copyToClipboard</a></li><li><a href="global.html#createImpFamily">createImpFamily</a></li><li><a href="global.html#deleteOldFamily">deleteOldFamily</a></li><li><a href="global.html#determineProxySettings">determineProxySettings</a></li><li><a href="global.html#finish">finish</a></li><li><a href="global.html#generatePersonalPage">generatePersonalPage</a></li><li><a href="global.html#getImp">getImp</a></li><li><a href="global.html#load">load</a></li><li><a href="global.html#loadJSONFromServer">loadJSONFromServer</a></li><li><a href="global.html#next">next</a></li><li><a href="global.html#onClickMenu">onClickMenu</a></li><li><a href="global.html#saveJSONToServer">saveJSONToServer</a></li><li><a href="global.html#serverError">serverError</a></li><li><a href="global.html#showParticipants">showParticipants</a></li><li><a href="global.html#showPersonalImp">showPersonalImp</a></li><li><a href="global.html#showPersonToGivePresent">showPersonToGivePresent</a></li><li><a href="global.html#showResult">showResult</a></li><li><a href="global.html#shuffle">shuffle</a></li><li><a href="global.html#shureToShuffle">shureToShuffle</a></li><li><a href="global.html#solution">solution</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Nov 23 2020 17:56:08 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

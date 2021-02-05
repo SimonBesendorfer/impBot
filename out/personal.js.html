@@ -30,33 +30,53 @@
 let shuffled = [];
 let counter = 0;
 
+/**
+ * addParticipant() adds the entered Name to the Array participants and shuffled.
+ * Before the Name is added, the entered value is checkt, if it is already in the array.
+ * If it is already in the array, an Error Message will be displayed and the name will NOT be added to the Array.
+ * The function checkForNext() will be started.
+ */
 function addParticipant() {
     let participant = document.getElementById('participant').value;
-    participants.push(participant);
-    shuffled.push(participant);
-    document.getElementById('participantsList').insertAdjacentHTML('beforeend', '&lt;li>' + participant + '&lt;/li>')
-    document.getElementById('participant').value = '';
-    counter = counter + 1;
-    checkForNext();
+    let nameConflict = false;
+    for (i = 0; i &lt; participants.length; i++) {
+        if (participant == participants[i]) {
+            nameConflict = true;
+        }
+    }
+    if (nameConflict == true) {
+        document.getElementById('participant').value = '';
+        document.getElementById('nameConflict').classList.remove('d-none');
+        setTimeout(function(){
+            document.getElementById('nameConflict').classList.add('d-none');
+        }, 6000)
+    } else {
+        participants.push(participant);
+        shuffled.push(participant);
+        document.getElementById('participantsList').insertAdjacentHTML('beforeend', '&lt;li>' + participant + '&lt;/li>')
+        document.getElementById('participant').value = '';
+        counter = counter + 1;
+        checkForNext();
+    }
 }
 
+/**
+ * checkForNext() checks, if there are already 3 or more participants in the Arrays (participants and shuffled)
+ */
 function checkForNext() {
     if (counter >= 3) {
         document.getElementById('nextBtn').classList.remove('d-none');
     }
 }
 
-
 /**
- * 
- * Fucntion to shuffle the array content 
+ * shuffle() is started by clicking on the button "weiter". It will shuffle the Array Position
+ * of the Names in the Array shuffled.
+ * After the array is shuffled, the checkForConflict() function will be started. 
 */
- function shuffle() {
-
+function shuffle() {
     for (let i = shuffled.length - 1; i > 0; i--) {
-        // Generate random number  
         let j = Math.floor(Math.random() * (i + 1));
-
         let temp = shuffled[i];
         shuffled[i] = shuffled[j];
         shuffled[j] = temp;
@@ -64,7 +84,12 @@ function checkForNext() {
     checkForConflict();
 }
 
-// Checks if the shuffled array mataches on any place with the previous array position
+/**
+ * checkForConflict() checks, if the name[i] in the participants Array is the same name as it is
+ * in at the same position in the Array shuffled. All Array positions will be checkt.
+ * If there is the same name on any place, the function shuffle() will be started again.
+ * If there is no conclict, the function solution() will be started.
+ */
 function checkForConflict() {
     let conflict = false;
     for (let i = 0; i &lt; shuffled.length; i++) {
@@ -72,30 +97,30 @@ function checkForConflict() {
             conflict = true;
         }
     }
-    console.log(conflict);
     if (conflict === true) {
         shuffle();
     } else {
-        document.getElementById('glass').classList.remove('d-none');
-        setTimeout(function(){
-            document.getElementById('glass').classList.add('d-none'); 
-            solution();       
-        }, 1500)
-        //solution();
+        startLoadingAnimation();
+        setTimeout(function () {
+            stopLoadingAnimation();
+        }, 3500)
+        solution();
     }
 }
 
+/**
+ * It defines the parameter i and starts the getImp() function
+ */
 function solution() {
     let i = 0;
-    document.getElementById('glass').classList.remove('d-none');
-    setTimeout(function(){
-        //document.getElementById('glass').classList.add('d-none');        
-    }, 1500)
     getImp(i);
 }
 
+/**
+ * getImp() will Display Result information and is one of the functions, which leads you thru the results.
+ * @param {number} i of array position which will be showed
+ */
 function getImp(i) {
-    console.log('i ist ' + i + ' counter ist ' + counter);
     if (i &lt; counter) {
         document.getElementById('content').innerHTML = '';
         let HTML = `&lt;h2>
@@ -105,24 +130,27 @@ function getImp(i) {
         &lt;h2>${participants[i]}&lt;/h2>
         &lt;p>weiter!&lt;/p>
         &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter&lt;/button>
-        &lt;img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
+        `;
         document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
     } if (i == counter) {
         finish();
     }
-
     document.getElementById('content').innerHTML = '';
     let HTML = `&lt;h2>
     Unser Wichtel hat den Topf geschüttelt!
     &lt;/h2>
-    &lt;p>Gib das Handy an&lt;/p>
+    &lt;p style="margin-top: 24px">Gib das Handy an&lt;/p>
     &lt;h2>${participants[i]}&lt;/h2>
     &lt;p>weiter!&lt;/p>
     &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="checkPerson(${i})">weiter&lt;/button>
-    &lt;img style="width: 100px;" id="glass" class="jiggle d-none" src="img/glass.png">`;
+    `;
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
+/**
+ * checkPerson() will Display Result Information and is one of the functions, whick leads you thru the results.
+ * @param {number} i of array position which will be showed
+ */
 function checkPerson(i) {
     document.getElementById('content').innerHTML = '';
     let HTML = `&lt;h2>Bist du ${participants[i]}?
@@ -133,18 +161,26 @@ function checkPerson(i) {
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
+/**
+ * showResult() will Display Result Information and is one of the functions, whick leads you thru the results.
+ * @param {number} i of array position which will be showed 
+ */
 function showResult(i) {
     document.getElementById('content').innerHTML = '';
     let HTML = `&lt;h2>${participants[i]}&lt;/h2>
-    &lt;p>du wirst ${shuffled[i]} beschenken!&lt;/p>
+    &lt;p>du wirst &lt;b>${shuffled[i]}&lt;/b> beschenken!&lt;/p>
     &lt;button id="nextBtn" href="#" class="myButton" style="margin-top: 12px" onclick="next(${i})">weiter&lt;/button>
     `
     document.getElementById('content').insertAdjacentHTML("beforeend", HTML);
 }
 
+/**
+ * next() will Display Result Information and is one of the functions, whick leads you thru the results.
+ * adds +1 th the parameter which is responsible for showing the array position.
+ * @param {number} i of array position which will be showed
+ */
 function next(i) {
     a = i + 1;
-    console.log('a ist ' + a);
     if (a &lt; counter) {
         getImp(a);
     } else {
@@ -152,6 +188,9 @@ function next(i) {
     }
 }
 
+/**
+ * finish() shows a final Screen and gives the option for going back to index.html
+ */
 function finish() {
     document.getElementById('content').innerHTML = '';
     let HTML = `&lt;h2>Frohe Weihnachten&lt;/h2>
@@ -169,13 +208,13 @@ function finish() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#onClickMenu">onClickMenu</a></li><li><a href="global.html#shuffle">shuffle</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addMessage">addMessage</a></li><li><a href="global.html#addParticipant">addParticipant</a></li><li><a href="global.html#checkForConflict">checkForConflict</a></li><li><a href="global.html#checkForMatch">checkForMatch</a></li><li><a href="global.html#checkForNext">checkForNext</a></li><li><a href="global.html#checkIfShuffled">checkIfShuffled</a></li><li><a href="global.html#checkPerson">checkPerson</a></li><li><a href="global.html#copyToClipboard">copyToClipboard</a></li><li><a href="global.html#createImpFamily">createImpFamily</a></li><li><a href="global.html#deleteOldFamily">deleteOldFamily</a></li><li><a href="global.html#determineProxySettings">determineProxySettings</a></li><li><a href="global.html#finish">finish</a></li><li><a href="global.html#generatePersonalPage">generatePersonalPage</a></li><li><a href="global.html#getImp">getImp</a></li><li><a href="global.html#load">load</a></li><li><a href="global.html#loadJSONFromServer">loadJSONFromServer</a></li><li><a href="global.html#next">next</a></li><li><a href="global.html#onClickMenu">onClickMenu</a></li><li><a href="global.html#saveJSONToServer">saveJSONToServer</a></li><li><a href="global.html#serverError">serverError</a></li><li><a href="global.html#showParticipants">showParticipants</a></li><li><a href="global.html#showPersonalImp">showPersonalImp</a></li><li><a href="global.html#showPersonToGivePresent">showPersonToGivePresent</a></li><li><a href="global.html#showResult">showResult</a></li><li><a href="global.html#shuffle">shuffle</a></li><li><a href="global.html#shureToShuffle">shureToShuffle</a></li><li><a href="global.html#solution">solution</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Tue Nov 03 2020 14:25:22 GMT+0100 (GMT+01:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Nov 23 2020 17:56:08 GMT+0100 (GMT+01:00)
 </footer>
 
 <script> prettyPrint(); </script>
